@@ -3,9 +3,9 @@
 <div class="product">
     <div class="tille">
         <h3>Kết quả tìm kiếm</h3>
-        <?php
-        echo count($dssanpham);
-        ?>
+        <!-- <?php
+        // echo count($dssanpham);
+        ?> -->
     </div>
     <div class="sanpham responsive">
         <?php if (!empty($dssanpham)) {

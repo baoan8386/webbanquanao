@@ -33,39 +33,38 @@
         </form>
     </main> -->
     <?php
-    if (isset($_POST['login'])) {
-        $user = $_POST['username'];
-        $pass = $_POST['password'];
-        if ($user != 0 || $pass != 0) {
-            $login = admin_query($user);
+   if (isset($_POST['login'])) {
+    $user = $_POST['username'];
+    $pass = $_POST['password'];
+    
+    if (!empty($user) && !empty($pass)) {
+        $login = admin_query($user); // Truy vấn tài khoản theo tên đăng nhập
+        
+        if ($login) {
             foreach ($login as $row) {
                 extract($row);
-                $_SESSION['idAdmin'] =  $id;
-                $_SESSION['userAd'] =  $username;
+                
+                // Kiểm tra mật khẩu có khớp hay không
+                if ($pass === $password) { // Hoặc sử dụng password_verify nếu mật khẩu được mã hóa
+                    $_SESSION['idAdmin'] =  $id;
+                    $_SESSION['userAd'] =  $username;
+                    echo "<script>alert('Xin chào " . $_SESSION['userAd'] . ". Bạn đã đăng nhập thành công.')</script>";
+                    header("location: ../controller/indexAdmin.php?act=userAd");
+                    exit; // Dừng thực thi sau khi chuyển hướng
+                }
             }
-            echo "<script>alert('Xin chào " . $_SESSION['userAd'] . ". Bạn đã đăng nhập thành công.')</script>";
-            header("location: ../controller/indexAdmin.php?act=userAd");
-        } else {
-            echo "<script>alert('Vui lòng nhập đầy đủ thông tin')</script>";
         }
-    }
-
-    if (isset($_SESSION['idAdmin'])) {
-        header("location: ../controller/indexAdmin.php?act=userAd");
+        
+        // Nếu thông tin không đúng
+        echo "<script>alert('Tên đăng nhập hoặc mật khẩu không đúng.')</script>";
     } else {
-        // echo '
-        // <main>
-        //     <form action="" method="POST" class="sua">
-        //         <h2>Đăng nhập trang admin</h2>
-        //         <img src="../view/images/logo1.png">
-        //         <label for="">User name</label><br>
-        //         <input type="text" placeholder="User name" name="username"> <br><br>
-        //         <label for="">Password</label> <br>
-        //         <input type="password" placeholder="Password" name="password"><br> <br>
-        //         <input type="submit" value="ĐĂNG NHẬP" name="login">
-        //     </form>
-        // </main>
-        // ';
+        echo "<script>alert('Vui lòng nhập đầy đủ thông tin')</script>";
     }
+}
+
+if (isset($_SESSION['idAdmin'])) {
+    header("location: ../controller/indexAdmin.php?act=userAd");
+}
+
     ?>
 </div>

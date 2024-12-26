@@ -40,7 +40,9 @@ $sql = sanpham_seach($name);
                             <td colspan="3" class="tensp">' . $row['tensp'] . '</td>
                             <td>' . number_format($row['gia'], 0, ',', '.') . 'đ</td>
                             <td>' . $row['iddanhmuc'] . '</td>
-                           
+                            <td>' . $row['size_name'] . '</td>
+                            <td>' . $row['iddanhmuc'] . '</td>
+                            <td>' . $row['so_luong'] . '</td>
                             <td class="ad"><a href="../model/suasp.php?page_layout=sua&id=' . $row['id'] . '"> <i class="bx bx-edit"></i> </a></td>
                             <td class="ad"><a href="../model/xoasp.php?page_layout=xoa&id=' . $row['id'] . '"> <i class="bx bx-message-square-minus"></i> </a></td>
                         </tr>
