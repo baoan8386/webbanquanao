@@ -1,0 +1,77 @@
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+table th, table td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+table th {
+    background-color: #f4f4f4;
+    color: #333;
+    font-weight: bold;
+    background-color: pink;
+}
+
+table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+table a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+table a:hover {
+    text-decoration: underline;
+}
+
+table td a {
+    margin: 0 5px;
+}
+
+/* Nút hủy đơn hàng */
+a {
+    color: red;
+    font-weight: bold;
+}
+
+a:hover {
+    color: darkred;
+}
+
+/* Thông báo toast */
+.toast {
+    visibility: hidden;
+    max-width: 50px;
+    height: 50px;
+    margin-left: -125px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 2px;
+    padding: 16px;
+    position: fixed;
+    z-index: 1;
+    left: 50%;
+    bottom: 30px;
+    font-size: 17px;
+}
+
+.toast.success {
+    background-color: #4CAF50; /* Màu xanh cho thông báo thành công */
+}
+
+.toast.error {
+    background-color: #f44336; /* Màu đỏ cho thông báo lỗi */
+}
+
+.toast.show {
+    visibility: visible;
+    max-width: 350px;
+    transition: visibility 0.5s, max-width 0.5s, bottom 0.5s;
+}

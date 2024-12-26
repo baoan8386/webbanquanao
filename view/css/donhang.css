@@ -1,0 +1,104 @@
+/* Reset mặc định của trình duyệt */
+body, h1, p, table, th, td, button, form {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Thiết lập chung */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+    line-height: 1.6;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 20px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+h1 {
+    text-align: center;
+    color: #444;
+    margin-bottom: 20px;
+}
+
+/* Bảng danh sách đơn hàng */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+thead tr {
+    background-color: #007bff;
+    color: #fff;
+    text-align: left;
+}
+
+th, td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tbody tr:hover {
+    background-color: #f1f8ff;
+}
+
+.status {
+    font-weight: bold;
+}
+
+.status.danggiao {
+    color: #007bff;
+}
+
+.status.hoanthanh {
+    color: #28a745;
+}
+
+.status.dahuy {
+    color: #dc3545;
+}
+
+/* Nút hành động */
+.btn-danger {
+    background-color: #e74c3c;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-danger:hover {
+    background-color: #c0392b;
+    transform: scale(1.05);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+.btn-danger:active {
+    background-color: #a93226;
+    transform: scale(0.98);
+}
+
+/* Phần thông báo */
+p {
+    text-align: center;
+    font-size: 16px;
+    color: #555;
+    margin-top: 20px;
+}
