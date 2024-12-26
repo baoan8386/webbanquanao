@@ -16,10 +16,12 @@ $id_user = $_SESSION['id']; // Lấy id_user từ session
 if (isset($_POST['addcart'])) {
     $id_sanpham = $_POST['id_sanpham'];
     $so_luong = isset($_POST['so_luong']) ? $_POST['so_luong'] : 0;  // Kiểm tra và đảm bảo giá trị tồn tại
+    $size_id = $_POST['size_id'];  // Lấy giá trị size_id từ form
+    $color_id = $_POST['color_id'];  // Lấy giá trị color_id từ form
 
-    addcart($id_sanpham, $so_luong, $id_user);
+    // Gọi hàm addcart với tất cả tham số
+    addcart($id_sanpham, $so_luong, $id_user, $size_id, $color_id);
 }
-
 
 
 // Cập nhật số lượng sản phẩm trong giỏ hàng

@@ -3,23 +3,31 @@
 include_once('config.php');
 
 // Thêm sản phẩm vào giỏ hàng
-function addcart($id_sanpham, $soluong, $id_user) {
-    // Lấy chi tiết sản phẩm từ bảng sanpham_chitiet
-    $query_sanpham_detail = "SELECT sc.id, s.gia FROM sanpham_chitiet sc JOIN sanpham s ON sc.id_sanpham = s.id WHERE sc.id_sanpham = ?";
-    $sanpham_detail = pdo_query_one($query_sanpham_detail, $id_sanpham);
+function addcart($id_sanpham, $soluong, $id_user, $size_id, $color_id) {
+    // Lấy chi tiết sản phẩm từ bảng sanpham_chitiet dựa trên id_sanpham, size_id, và color_id
+    $query_sanpham_detail = "SELECT sc.id, s.gia 
+                             FROM sanpham_chitiet sc 
+                             JOIN sanpham s ON sc.id_sanpham = s.id 
+                             WHERE sc.id_sanpham = ? AND sc.size_id = ? AND sc.color_id = ?";
+    $sanpham_detail = pdo_query_one($query_sanpham_detail, $id_sanpham, $size_id, $color_id);
 
     if ($sanpham_detail) {
-        // Lấy thông tin chi tiết sản phẩm (bao gồm giá)
         $gia = $sanpham_detail['gia'];
-        $id_chitiet_sp = $sanpham_detail['id'];  // Lấy id chi tiết sản phẩm
+        $id_chitiet_sp = $sanpham_detail['id']; // Lấy id chi tiết sản phẩm
 
-        // Kiểm tra xem sản phẩm đã có trong giỏ hàng của người dùng chưa
-        $query_check = "SELECT * FROM cart_details WHERE id_cart = (SELECT id_cart FROM cart WHERE id_user = ?) AND id_chitiet_sp = ?";
+        // Kiểm tra xem sản phẩm đã có trong giỏ hàng của người dùng chưa (kèm size và màu)
+        $query_check = "SELECT * 
+                        FROM cart_details 
+                        WHERE id_cart = (SELECT id_cart FROM cart WHERE id_user = ?) 
+                        AND id_chitiet_sp = ?";
         $result_check = pdo_query($query_check, $id_user, $id_chitiet_sp);
 
         if (count($result_check) > 0) {
             // Nếu sản phẩm đã có trong giỏ hàng, cập nhật số lượng
-            $query_update = "UPDATE cart_details SET soluong = soluong + ? WHERE id_cart = (SELECT id_cart FROM cart WHERE id_user = ?) AND id_chitiet_sp = ?";
+            $query_update = "UPDATE cart_details 
+                             SET soluong = soluong + ? 
+                             WHERE id_cart = (SELECT id_cart FROM cart WHERE id_user = ?) 
+                             AND id_chitiet_sp = ?";
             pdo_execute($query_update, $soluong, $id_user, $id_chitiet_sp);
         } else {
             // Nếu chưa có, thêm sản phẩm mới vào giỏ hàng
@@ -41,13 +49,15 @@ function addcart($id_sanpham, $soluong, $id_user) {
             }
 
             // Thêm sản phẩm vào giỏ hàng chi tiết
-            $query_insert_cart_detail = "INSERT INTO cart_details (id_cart, id_chitiet_sp, soluong, gia) VALUES (?, ?, ?, ?)";
+            $query_insert_cart_detail = "INSERT INTO cart_details (id_cart, id_chitiet_sp, soluong, gia) 
+                                         VALUES (?, ?, ?, ?)";
             pdo_execute($query_insert_cart_detail, $id_cart, $id_chitiet_sp, $soluong, $gia);
         }
     } else {
-        die("Không tìm thấy chi tiết sản phẩm.");
+        die("Không tìm thấy chi tiết sản phẩm với kích thước và màu sắc đã chọn.");
     }
 }
+
 
 // Hiển thị giỏ hàng
 function showcart($id_user) {
