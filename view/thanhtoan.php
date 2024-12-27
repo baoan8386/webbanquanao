@@ -35,27 +35,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
      if (empty($address) || empty($phone) || !is_numeric($phone)) {
         echo "<script>alert('Vui lòng nhập địa chỉ và số điện thoại hợp lệ!');</script>";
     } else {
-        // Gọi function xử lý thanh toán từ model
+        // Gọi function xử lý thanh toán từ model một lần duy nhất
         if (createOrder($id_user, $cart_items, $payment_method, $address, $phone)) {
             // Chuyển hướng đến trang cảm ơn (nếu cần)
             if ($payment_method === 'chuyenkhoan') {
                 header("Location: ../view/payments_momo.php");
                 exit();
+            } else {
+                header("Location: ../view/thankyou.php");
+                exit();
             }
-        } else {
-            echo "<script>alert('Có lỗi xảy ra khi thanh toán.');</script>";
-        }
-    }
-
-    // Kiểm tra đầu vào
-    if (empty($address) || empty($phone) || !is_numeric($phone)) {
-        echo "<script>alert('Vui lòng nhập địa chỉ và số điện thoại hợp lệ!');</script>";
-    } else {
-        // Gọi function xử lý thanh toán từ model
-        if (createOrder($id_user, $cart_items, $payment_method, $address, $phone)) {
-            // Chuyển hướng đến trang cảm ơn (nếu cần)
-            header("Location: ../view/thankyou.php");
-            exit();
         } else {
             echo "<script>alert('Có lỗi xảy ra khi thanh toán.');</script>";
         }
