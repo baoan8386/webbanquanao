@@ -3,7 +3,7 @@
 
 
 <div class="banner">
-    <img src="https://file.hstatic.net/200000538469/file/faship__5__8bfd3789a60a40d4a8dd97a2410b78a8.png" alt="">
+    <img src="../view/images/poster2.png" alt="">
 </div>
 <div class="product" style="margin-top: 50px; margin-bottom: 2rem;">
     <div class="ten">
