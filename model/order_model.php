@@ -40,20 +40,55 @@ function getOrderDetails($order_id) {
 }
 
 
-// Hàm hủy đơn hàng
-function cancelOrder($order_id) {
-    $sql = "UPDATE dathang SET trangthai = 'dahuy' WHERE order_id = :order_id";
-    $params = [':order_id' => $order_id]; 
 
+// Hàm hủy đơn hàng và cộng lại số lượng vào kho
+function cancelOrder($order_id) {
+    $conn = pdo_con(); // Lấy kết nối PDO
     try {
-        // Thực thi câu lệnh SQL với tham số
-        pdo_query_cancel($sql, $params);
-        return true; // Trả về true khi cập nhật thành công
+        // Bắt đầu giao dịch (transaction) để đảm bảo tính toàn vẹn dữ liệu
+        $conn->beginTransaction();
+
+        // Lấy thông tin chi tiết sản phẩm trong đơn hàng
+        $query = "
+            SELECT cd.id_chitiet_sp, cd.soluong
+            FROM chitietdathang cd
+            WHERE cd.order_id = ?";
+        $stmt = $conn->prepare($query);  // Dùng kết nối đã mở ($conn)
+        $stmt->execute([$order_id]);
+        $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Cập nhật lại số lượng sản phẩm vào kho
+        $query_update_stock = "
+            UPDATE sanpham_chitiet 
+            SET so_luong = so_luong + ?
+            WHERE id = ?";
+
+        // Cập nhật số lượng cho mỗi sản phẩm trong đơn hàng đã hủy
+        foreach ($items as $item) {
+            $stmt_update_stock = $conn->prepare($query_update_stock); // Dùng kết nối đã mở ($conn)
+            $stmt_update_stock->execute([$item['soluong'], $item['id_chitiet_sp']]);
+        }
+
+        // Cập nhật trạng thái đơn hàng thành 'dahuy'
+        $sql = "UPDATE dathang SET trangthai = 'dahuy' WHERE order_id = :order_id";
+        $params = [':order_id' => $order_id];
+        pdo_query_cancel($sql, $params); // Lưu ý: Hàm này nên dùng đối tượng kết nối đúng
+
+        // Commit giao dịch nếu không có lỗi
+        $conn->commit(); // Dùng kết nối đã mở ($conn)
+
+        return true; // Trả về true khi hủy thành công và cập nhật số lượng vào kho
     } catch (PDOException $e) {
-        // Nếu có lỗi, trả về false
-        return false; 
+        // Rollback nếu có lỗi xảy ra
+        if ($conn) {
+            $conn->rollBack(); // Dùng kết nối đã mở ($conn) để rollback
+        }
+        return false; // Trả về false nếu có lỗi
     }
 }
+
+
+
 // Hàm xóa đơn hàng và chi tiết đơn hàng
 function donhang_delete($order_id) {
     // Bắt đầu giao dịch (transaction) để đảm bảo tính toàn vẹn dữ liệu
