@@ -62,12 +62,12 @@ function createOrder($user_id, $cart_items, $payment_method, $address, $phone) {
             VALUES (?, ?, ?, ?)";
 
 
-            // $query_update = "
-            // UPDATE sanpham_chitiet 
-            // SET so_luong = so_luong - ? 
-            // WHERE id = ?";
+            $query_update = "
+            UPDATE sanpham_chitiet 
+            SET so_luong = so_luong - ? 
+            WHERE id = ?";
            
-            $query_update = "UPDATE sanpham_chitiet SET so_luong = so_luong - ? WHERE id = ?";
+           
 
 
         foreach ($cart_items as $item) {
