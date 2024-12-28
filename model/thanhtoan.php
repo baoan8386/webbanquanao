@@ -62,17 +62,21 @@ function createOrder($user_id, $cart_items, $payment_method, $address, $phone) {
             VALUES (?, ?, ?, ?)";
 
 
-            $query_update = "
-            UPDATE sanpham_chitiet 
-            SET so_luong = so_luong - ? 
-            WHERE id = ?";
+            // $query_update = "
+            // UPDATE sanpham_chitiet 
+            // SET so_luong = so_luong - ? 
+            // WHERE id = ?";
+           
+            $query_update = "UPDATE sanpham_chitiet SET so_luong = so_luong - ? WHERE id = ?";
+
 
         foreach ($cart_items as $item) {
             $stmt_details = $conn->prepare($query_details);
             $stmt_details->execute([$order_id, $item['id_chitiet_sp'], $item['soluong'], $item['thanh_tien']]);
-
+            
             $stmt_update = $conn->prepare($query_update);
             $stmt_update->execute([$item['soluong'], $item['id_chitiet_sp']]);
+
         }
 
         // Xóa giỏ hàng chi tiết sau khi thanh toán

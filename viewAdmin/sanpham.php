@@ -9,12 +9,14 @@
 
         <?php
         // Kiểm tra nếu có yêu cầu xóa sản phẩm
-        if (isset($_GET['id'])) {
+        if (isset($_GET['id']) && isset($_GET['color_id']) && isset($_GET['size_id'])) {
             $product_id = intval($_GET['id']);
-            if (sanpham_delete($product_id)) {
-                echo "<script>alert('Xóa sản phẩm thành công');</script>";
+            $color_id = intval($_GET['color_id']);
+            $size_id = intval($_GET['size_id']);
+            if (sanpham_delete($product_id,$color_id, $size_id)) {
+                echo "<script>alert('Xóa sản phẩm thành công');window.location.href='indexAdmin.php?act=sanpham';</script>";
             } else {
-                echo "<script>alert('Xóa sản phẩm thất bại');</script>";
+                echo "<script>alert('Xóa sản phẩm thất bại');window.location.href='indexAdmin.php?act=sanpham';</script>";
             }
         }
 
@@ -65,9 +67,12 @@
         // Duyệt qua kết quả trả về từ hàm `sanpham_showAll()` và hiển thị dữ liệu
         foreach ($query as $row) {
             extract($row);
+             // Gán giá trị từ $row
+            $color_id = isset($row['color_id']) ? $row['color_id'] : null;
+            $size_id = isset($row['size_id']) ? $row['size_id'] : null;
 
             // Đường dẫn để xóa sản phẩm
-            $dellink = "../controller/indexAdmin.php?act=sanpham&id=" . $id;
+            $dellink = "../controller/indexAdmin.php?act=sanpham&id=" . $id . "&color_id=" . $color_id . "&size_id=" . $size_id;
 
             echo '
                 <tr>

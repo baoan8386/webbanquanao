@@ -9,7 +9,7 @@
 
             if ($name != "") {
                 $dsdanhmmuc = danhmuc_insert($iddanhmuc,$name);
-                echo "<script>alert('Thêm danh mục thành công')</script>";
+                echo "<script>alert('Thêm danh mục thành công');window.location.href='indexAdmin.php?act=danhmuc</script>";
             }
         }
         ?>

@@ -47,13 +47,15 @@ function showcart_view() {
     global $id_user;
     $cart_items = showcart($id_user);
     $tong = 0;
-    $i = 1;
+    $i = 1; 
     $tongsoluong = 0; 
     foreach ($cart_items as $row) {
         $tt = $row['gia'] * $row['soluong'];
         $tong += $tt;
         $tongsoluong += $row['soluong']; // Tính tổng số lượng sản phẩm
 
+
+      
         
         echo '
             <tr>

@@ -2,9 +2,6 @@
     <main>
         <h2 style="text-align: center;">Danh Sách User</h2>
         <?php
- 
-
-          
             echo "<table >";
             echo '
                     <tr>
@@ -51,29 +48,30 @@
                     </tr>
                     ';
 
-                    $query = show_user();
-                    foreach($query as $row){
-                        extract($row);
-                        $dellink="../controller/indexAdmin.php?id=".$id ;
-                    echo '
-                    <tr>
-                        <td>' .$id. '</td>
-                        <td >' . $username . '</td>
-                        <td>' . $password . '</td>
-                        <td colspan="2">' . $name . '</td>
-                        <td colspan="3">' . $email . '</td>
-                        <td colspan="3"><img src="../view/images/' . $avata . '"></td>
-                        <td class="ad"><a onclick="return Deluser()" href="'.$dellink.'"> <i class="bx bx-message-square-minus"></i> </a></td>
-                    </tr>
-                    ';
-       
-            }
-            echo "</table>";
-            if(isset($_GET['id'])){
-                delete_user($id);
-                echo "<script>alert('Xoá User thành công')</script>";
-            }
+            $query = show_user();
+            foreach($query as $row){
+                extract($row);
+                $dellink="../controller/indexAdmin.php?id=".$id;
+            echo '
+            <tr>
+                <td>' .$id. '</td>
+                <td >' . $username . '</td>
+                <td>' . $password . '</td>
+                <td colspan="2">' . $name . '</td>
+                <td colspan="3">' . $email . '</td>
+                <td colspan="3"><img src="../view/images/' . $avata . '"></td>
+                <td class="ad"><a onclick="return confirmDelete()" href="'.$dellink.'"> <i class="bx bx-message-square-minus"></i> </a></td>
+            </tr>
+            ';
+        }
+        echo "</table>";
 
+        // Kiểm tra nếu có ID trong URL và gọi hàm delete_user
+        if(isset($_GET['id'])){
+            $id_to_delete = $_GET['id'];
+            delete_user($id_to_delete);
+            echo "<script>alert('Xóa User thành công');window.location.href='indexAdmin.php?act=admin';</script>";
+        }
         ?>
     </main>
 </div>

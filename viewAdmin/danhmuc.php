@@ -54,7 +54,7 @@
             echo "</table>";
             if(isset($_GET['iddanhmuc'])){
                 danhmuc_delete($iddanhmuc);
-                echo "<script>alert('Xoá Danh mục thành công')</script>";
+                echo "<script>alert('Xoá Danh mục thành công');window.location.href='indexAdmin.php?act=danhmuc';</script>";
             }
         ?>
     </main>

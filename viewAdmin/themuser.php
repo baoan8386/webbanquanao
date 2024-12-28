@@ -13,9 +13,14 @@
 
             if ($username != "" && $password != "" && $name != "" && $email != "" && $avata != "") {
                
-                add_user($username,$password,$name,$email, $avata);
+                $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+                
+                // Thêm người dùng với mật khẩu đã mã hóa
+                add_user($username, $hashed_password, $name, $email, $avata);
+
+                // Di chuyển ảnh đại diện
                 move_uploaded_file($_FILES['hinh']['tmp_name'],  $target_file);
-                echo "<script>alert('Thêm User thành công')</script>";
+                echo "<script>alert('Thêm User thành công');window.location.href='indexAdmin.php?act=admin';</script>";
             }
         }
         ?>

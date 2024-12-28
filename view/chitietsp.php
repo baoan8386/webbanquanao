@@ -59,7 +59,7 @@ if (isset($_GET['idsp'])) {
             <p><b>Tình trạng:</b> ' . htmlspecialchars($tinh_trang) . '</p>
 
              <!-- Hiển thị số lượng còn trong kho -->
-            <p><b>Số lượng trong kho:</b> ' . htmlspecialchars($so_luong) . '</p>
+            <!--<p><b>Số lượng trong kho:</b> ' . htmlspecialchars($so_luong) . '</p>-->
 
 
             <!-- Các trường ẩn -->

@@ -2,15 +2,16 @@
 
 function sanpham_showAll($filter = '%') {
     $sql = "SELECT 
-                sp.id, 
-                sp.hinh, 
-                sp.tensp, 
-                sp.gia, 
-                sp.iddanhmuc, 
-                c.color_name, 
-                c.hex_code, 
-                sz.size_name, 
-                ct.so_luong
+               sp.id, 
+            sp.hinh, 
+            sp.tensp, 
+            sp.gia, 
+            sp.iddanhmuc, 
+            ct.color_id, 
+            ct.size_id, 
+            c.color_name, 
+            sz.size_name, 
+            ct.so_luong
             FROM sanpham sp
             LEFT JOIN sanpham_chitiet ct ON sp.id = ct.id_sanpham
             LEFT JOIN color c ON ct.color_id = c.color_id
@@ -58,20 +59,29 @@ function sanpham_update($tensp,$hinh,$gia,$danhmuc, $id){
     pdo_execute($sql, $tensp,$hinh,$gia,$danhmuc, $id);
 }
 
-function sanpham_delete($id) {
+function sanpham_delete($id_sanpham, $color_id, $size_id) {
     try {
-        $sql = "DELETE FROM sanpham_chitiet WHERE id_sanpham=?";
-        pdo_execute($sql, $id);  // Xóa chi tiết sản phẩm
-    
-        $sql = "DELETE FROM sanpham WHERE id=?";
-        pdo_execute($sql, $id);  // Xóa sản phẩm chính
-        
-        return true;  // Trả về true khi xóa thành công
+        // Xóa chi tiết sản phẩm liên quan đến mã sản phẩm, màu sắc, và kích thước
+        $sql = "DELETE FROM sanpham_chitiet 
+                WHERE id_sanpham = ? AND color_id = ? AND size_id = ?";
+        pdo_execute($sql, $id_sanpham, $color_id, $size_id);
+
+        // Kiểm tra nếu không còn chi tiết nào liên quan đến sản phẩm, thì xóa sản phẩm chính
+        $sql = "SELECT COUNT(*) AS count FROM sanpham_chitiet WHERE id_sanpham = ?";
+        $result = pdo_query_one($sql, $id_sanpham);
+        if ($result['count'] == 0) {
+            $sql = "DELETE FROM sanpham WHERE id = ?";
+            pdo_execute($sql, $id_sanpham);
+        }
+
+        return true; // Trả về true nếu xóa thành công
     } catch (PDOException $e) {
-        // Nếu có lỗi, hiển thị thông báo lỗi
+        // Xử lý lỗi nếu có
+        error_log("Lỗi khi xóa sản phẩm: " . $e->getMessage());
         return false;
     }
 }
+
 
 
 
