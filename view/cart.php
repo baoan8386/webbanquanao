@@ -53,7 +53,7 @@ function showcart_view() {
         $tt = $row['gia'] * $row['soluong'];
         $tong += $tt;
         $tongsoluong += $row['soluong']; // Tính tổng số lượng sản phẩm
-
+        
 
       
         

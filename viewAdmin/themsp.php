@@ -31,7 +31,7 @@ if (isset($_POST['them'])) {
 
         // Di chuyển tệp hình ảnh
         move_uploaded_file($_FILES['hinh']['tmp_name'], $target_file);
-        echo "<script>alert('Thêm sản phẩm thành công');</script>";
+        echo "<script>alert('Thêm sản phẩm thành công');window.location.href='indexAdmin.php?act=sanpham';</script>";
     } else {
         echo "<script>alert('Vui lòng nhập đầy đủ thông tin');</script>";
     }

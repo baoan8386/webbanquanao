@@ -12,7 +12,7 @@ function addcart($id_sanpham, $soluong, $id_user, $size_id, $color_id) {
     $sanpham_detail = pdo_query_one($query_sanpham_detail, $id_sanpham, $size_id, $color_id);
 
     if ($sanpham_detail) {
-        $gia = $sanpham_detail['gia'];
+        $gia = $sanpham_detail['gia']; // Lấy giá sản phẩm
         $id_chitiet_sp = $sanpham_detail['id']; // Lấy id chi tiết sản phẩm
 
         // Kiểm tra xem sản phẩm đã có trong giỏ hàng của người dùng chưa (kèm size và màu)
@@ -57,8 +57,10 @@ function addcart($id_sanpham, $soluong, $id_user, $size_id, $color_id) {
         die("Không tìm thấy chi tiết sản phẩm với kích thước và màu sắc đã chọn.");
     }
 }
+
 // Hiển thị giỏ hàng
 function showcart($id_user) {
+    // Truy vấn để lấy thông tin chi tiết sản phẩm trong giỏ hàng của người dùng
     $query = "SELECT cd.id_cart_detail, sp.id AS id_sanpham, sp.tensp, sp.gia, cd.soluong, sp.hinh, 
                      s.size_name, c.color_name
               FROM cart_details cd
@@ -67,10 +69,12 @@ function showcart($id_user) {
               JOIN color c ON sc.color_id = c.color_id
               JOIN size s ON sc.size_id = s.size_id
               WHERE cd.id_cart IN (SELECT id_cart FROM cart WHERE id_user = ?)";
-    return pdo_query($query, $id_user);
+    return pdo_query($query, $id_user); // Trả về kết quả truy vấn
 }
+
 // Hiển thị giỏ hàng trên mobile
 function showcart_mobile($id_user) {
+    // Truy vấn để lấy thông tin sản phẩm cho giỏ hàng trên di động, không lấy thông tin về size và màu
     $query = "SELECT cd.id_cart_detail, sp.id, sp.tensp, sp.gia, cd.soluong 
               FROM cart_details cd
               JOIN sanpham_chitiet sc ON cd.id_chitiet_sp = sc.id
@@ -85,12 +89,14 @@ function showcart_mobile($id_user) {
 
 // Cập nhật số lượng sản phẩm trong giỏ hàng
 function update_cart($id_cart_detail, $new_soluong) {
+    // Cập nhật số lượng sản phẩm trong giỏ hàng
     $query_update = "UPDATE cart_details SET soluong = ? WHERE id_cart_detail = ?";
     pdo_execute($query_update, $new_soluong, $id_cart_detail);
 }
 
 // Xóa sản phẩm khỏi giỏ hàng
 function delete_product($id_cart_detail) {
+    // Xóa sản phẩm khỏi giỏ hàng
     $query_delete = "DELETE FROM cart_details WHERE id_cart_detail = ?";
     pdo_execute($query_delete, $id_cart_detail);
 }
@@ -110,28 +116,11 @@ function giamgia($id_user) {
                                   JOIN cart c ON cd.id_cart = c.id_cart
                                   SET cd.gia = cd.gia * 0.9
                                   WHERE c.id_user = ?";
-        pdo_execute($query_capnhat_giamgia, $id_user);
+        pdo_execute($query_capnhat_giamgia, $id_user); // Cập nhật giá các sản phẩm
     } 
 }
-?>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<?php
+// Áp dụng giảm giá cho sản phẩm có số lượng = 10
 function giamgia1sp($id_user) {
     // Lấy danh sách sản phẩm trong giỏ hàng của người dùng
     $query_sanpham = "SELECT cd.id_cart_detail, cd.soluong 
@@ -143,6 +132,7 @@ function giamgia1sp($id_user) {
     // Áp dụng giảm giá cho sản phẩm có số lượng bằng 10
     foreach ($cart_items as $item) {
         if ($item['soluong'] == 10) {
+            // Cập nhật giá của sản phẩm nếu số lượng = 10
             $query_capnhat_giamgia = "UPDATE cart_details 
                                       SET gia = gia * 0.9 
                                       WHERE id_cart_detail = ?";
