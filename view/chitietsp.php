@@ -62,7 +62,7 @@ if (isset($_GET['idsp'])) {
             <!--<p><b>Số lượng trong kho:</b> ' . htmlspecialchars($so_luong) . '</p>-->
 
 
-            <!-- Các trường ẩn -->
+            
             <input type="hidden" name="id_sanpham" value="' . htmlspecialchars($id) . '"/>
             <input type="hidden" name="hinh" value="' . htmlspecialchars($hinh) . '"/>
             <input type="hidden" name="tensp" value="' . htmlspecialchars($tensp) . '"/>
